@@ -1,0 +1,499 @@
+/* ==========================================================================
+   VARIABLES Y CONFIGURACIÓN INICIAL
+   ========================================================================== */
+:root {
+    --color-principal: #e00016;    /* Rojo vibrante */
+    --color-secundario: #f9e803;   /* Amarillo mostaza */
+    --color-oscuro: #121212;       /* Fondo premium */
+    --color-tarjeta: #1e1e1e;      /* Fondo de elementos */
+    --color-texto: #ffffff;
+    --color-texto-mutado: #a0a0a0;
+    --fuente-titulo: 'Lilita One', cursive;
+    --fuente-cuerpo: 'Poppins', sans-serif;
+    --shadow-soft: 0 4px 15px rgba(0, 0, 0, 0.3);
+    --shadow-strong: 0 8px 25px rgba(0, 0, 0, 0.5);
+    --transition-smooth: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--fuente-cuerpo);
+    background-color: var(--color-oscuro);
+    color: var(--color-texto);
+    overflow: hidden; /* Mantiene la estructura de pantallas fijas */
+    line-height: 1.6;
+}
+
+/* ==========================================================================
+   ESTRUCTURA DE PANTALLAS (SPA ARCHITECTURE)
+   ========================================================================== */
+.screen {
+    position: absolute;
+    top: 0; 
+    left: 0;
+    width: 100%; 
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.6s cubic-bezier(0.55, 0, 0.1, 1), 
+                transform 0.6s cubic-bezier(0.55, 0, 0.1, 1);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Pantalla activa */
+.screen:not(.hidden) {
+    opacity: 1;
+    pointer-events: auto;
+    z-index: 10;
+    transform: scale(1);
+}
+
+/* Estado oculto con un sutil efecto de escala */
+.screen.hidden {
+    opacity: 0;
+    pointer-events: none;
+    z-index: -1;
+    transform: scale(0.95);
+}
+
+/* Distribución para pantallas con contenido + álbum */
+section.screen {
+    grid-template-columns: 1fr 1fr;
+}
+
+.contenido {
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    text-align: left;
+    height: 100%;
+    background-color: var(--color-oscuro);
+}
+
+/* ==========================================================================
+   PANTALLA DE INICIO (HERO)
+   ========================================================================== */
+#inicio {
+    display: flex;
+    background: linear-gradient(rgba(18, 18, 18, 0.85), rgba(18, 18, 18, 0.95)), 
+                url('img/azulejos-blancos.png') repeat;
+    background-size: 1400px auto;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.hero-content {
+    max-width: 700px;
+    padding: 2rem;
+    animation: fadeInUp 0.8s ease;
+}
+
+.logo-wrapper {
+    margin-bottom: 1.5rem;
+}
+
+img.logo {
+    max-height: 220px;
+    width: auto;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+    transition: var(--transition-smooth);
+}
+
+img.logo:hover {
+    transform: scale(1.05) rotate(2deg);
+}
+
+#inicio h1 {
+    font-family: var(--fuente-titulo);
+    font-size: 3rem;
+    color: var(--color-texto);
+    letter-spacing: 1px;
+    line-height: 1.2;
+    margin-bottom: 0.5rem;
+}
+
+#inicio .highlight {
+    color: var(--color-secundario);
+    text-shadow: 2px 2px 0px var(--color-principal);
+}
+
+.hero-subtitle {
+    font-size: 1.2rem;
+    color: var(--color-texto-mutado);
+    margin-bottom: 2.5rem;
+    font-weight: 300;
+}
+
+.main-nav {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* ==========================================================================
+   COMPONENTES: BOTONES
+   ========================================================================== */
+.btn {
+    padding: 14px 28px;
+    font-size: 1rem;
+    font-family: var(--fuente-cuerpo);
+    font-weight: 600;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: var(--transition-smooth);
+    box-shadow: var(--shadow-soft);
+}
+
+.btn-primary {
+    background-color: var(--color-principal);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: var(--color-secundario);
+    color: #000;
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-strong);
+}
+
+.btn-secondary {
+    background-color: rgba(255, 255, 255, 0.08);
+    color: var(--color-texto);
+    backdrop-filter: blur(5px);
+}
+
+.btn-secondary:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-3px);
+}
+
+.volver {
+    margin-top: 2rem;
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    color: var(--color-texto-mutado);
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    border-radius: 30px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: var(--transition-smooth);
+}
+
+.volver:hover {
+    border-color: var(--color-principal);
+    color: var(--color-texto);
+    background-color: var(--color-principal);
+}
+
+/* ==========================================================================
+   SECCIÓN: NUESTRO MENÚ (TARJETAS)
+   ========================================================================== */
+h2 {
+    font-family: var(--fuente-titulo);
+    font-size: 2.8rem;
+    color: var(--color-secundario);
+    margin-bottom: 1.5rem;
+}
+
+.menu-grid {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-width: 450px;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    background-color: var(--color-tarjeta);
+    padding: 15px 20px;
+    border-radius: 15px;
+    border-left: 5px solid var(--color-principal);
+    transition: var(--transition-smooth);
+    box-shadow: var(--shadow-soft);
+}
+
+.menu-item:hover {
+    transform: translateX(8px);
+    background-color: #252525;
+}
+
+.menu-icon {
+    font-size: 1.8rem;
+    color: var(--color-secundario);
+    margin-right: 20px;
+}
+
+.menu-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.menu-info h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.price {
+    font-family: var(--fuente-titulo);
+    font-size: 1.4rem;
+    color: var(--color-secundario);
+    background: rgba(224, 0, 22, 0.15);
+    padding: 2px 12px;
+    border-radius: 8px;
+}
+
+/* ==========================================================================
+   SECCIONES: NOSOTROS Y CONTACTO
+   ========================================================================== */
+.description {
+    font-size: 1.05rem;
+    color: var(--color-texto-mutado);
+    max-width: 450px;
+}
+
+.description strong {
+    color: var(--color-texto);
+}
+
+.contact-list {
+    list-style: none;
+    width: 100%;
+    max-width: 450px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.contact-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+}
+
+.contact-list .icon {
+    font-size: 1.3rem;
+    color: var(--color-principal);
+    background: rgba(255, 255, 255, 0.05);
+    padding: 12px;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.contact-list strong {
+    display: block;
+    font-size: 0.9rem;
+    color: var(--color-texto-mutado);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.contact-list p, .contact-list a {
+    font-size: 1.1rem;
+    color: var(--color-texto);
+    text-decoration: none;
+}
+
+.contact-list a:hover {
+    color: var(--color-secundario);
+}
+
+/* ==========================================================================
+   GALERÍA / CARRUSEL DE IMÁGENES
+   ========================================================================== */
+.album-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #090909;
+    padding: 2rem;
+    overflow: hidden;
+}
+
+.album {
+    width: 100%;
+    max-width: 400px;
+    height: 70%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.album img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 20px;
+    box-shadow: var(--shadow-strong);
+    display: none; /* Controlado por JS */
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.album img:hover {
+    transform: scale(1.02);
+}
+
+/* Botones del Carrusel */
+.nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(8px);
+    color: #fff;
+    border: none;
+    font-size: 1.5rem;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    z-index: 15;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition-smooth);
+}
+
+.nav-btn:hover {
+    background: var(--color-principal);
+    color: white;
+}
+
+.prev-btn { left: 20px; }
+.next-btn { right: 20px; }
+
+/* ==========================================================================
+   LIGHTBOX / FOTO AMPLIADA
+   ========================================================================== */
+.overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 999;
+    backdrop-filter: blur(5px);
+}
+
+.foto-ampliada {
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 90%;
+    max-height: 85vh;
+    object-fit: contain;
+    z-index: 1000;
+    border-radius: 16px;
+    box-shadow: var(--shadow-strong);
+}
+
+.cerrar-foto {
+    position: fixed;
+    top: 20px; right: 20px;
+    background: var(--color-principal);
+    color: #fff;
+    border: none;
+    font-size: 1.2rem;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 1001;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition-smooth);
+}
+
+.cerrar-foto:hover {
+    background: var(--color-secundario);
+    color: #000;
+    transform: rotate(90deg);
+}
+
+/* ==========================================================================
+   ANIMACIONES Y RESPONSIVE DESIGN
+   ========================================================================== */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 📱 Ajustes móviles y tablets */
+@media (max-width: 992px) {
+    body {
+        overflow-y: auto; /* Permite scroll si el contenido se desborda en pantallas muy chicas */
+    }
+    
+    section.screen {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr;
+        height: auto;
+        min-height: 100vh;
+        overflow-y: auto;
+    }
+
+    .contenido {
+        padding: 3rem 2rem 1.5rem 2rem;
+        align-items: center;
+        text-align: center;
+    }
+
+    .menu-grid, .contact-list {
+        max-width: 100%;
+    }
+
+    .album-container {
+        height: 350px;
+        padding: 1rem;
+    }
+
+    .album {
+        height: 100%;
+    }
+
+    #inicio h1 {
+        font-size: 2.2rem;
+    }
+    
+    img.logo {
+        max-height: 160px;
+    }
+}
