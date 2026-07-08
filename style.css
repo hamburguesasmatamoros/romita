@@ -546,3 +546,9 @@ h2 {
     background-color: #25d366; /* Verde oficial de WhatsApp */
     border-color: #25d366;
 }
+.social-icon.tiktok:hover {
+    background-color: #010101; /* Negro característico */
+    border-color: #00f2fe;     /* El tono cian de TikTok */
+    box-shadow: 0 0 15px rgba(0, 242, 254, 0.6), 
+                0 0 25px rgba(254, 44, 85, 0.6); /* Efecto de luz neón doble (Cian y Magenta) */
+}
